@@ -12,8 +12,18 @@
     </style>
   </head>
   <body>
-    <div id="info" style="position: absolute; top: 10px; left: 10px; color: white; z-index: 1;">
-      A simple Three.js GLTF loader example with OrbitControls for ROBOTICS sem - 4
+    <div
+      id="info"
+      style="
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: white;
+        z-index: 1;
+      "
+    >
+      A simple Three.js GLTF loader example with OrbitControls for ROBOTICS sem
+      - 4
     </div>
     <div class="toggle-button-cover">
       <div class="button-cover">
@@ -37,6 +47,49 @@
         "imports": {
           "three": "https://unpkg.com/three@0.155.0/build/three.module.js",
           "three/addons/": "https://unpkg.com/three@0.155.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script>
+      let isLightBackground = false;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+
+        // Get the average brightness of the rendered scene
+        const pixelBuffer = new Uint8Array(
+          renderer.getCurrentViewport().width *
+            renderer.getCurrentViewport().height *
+            4
+        );
+        renderer.readRenderTargetPixels(
+          renderer.getRenderTarget(),
+          0,
+          0,
+          renderer.getCurrentViewport().width,
+          renderer.getCurrentViewport().height,
+          pixelBuffer
+        );
+
+        let totalBrightness = 0;
+        for (let i = 0; i < pixelBuffer.length; i += 4) {
+          const brightness =
+            (pixelBuffer[i] + pixelBuffer[i + 1] + pixelBuffer[i + 2]) /
+            (3 * 255);
+          totalBrightness += brightness;
+        }
+        const averageBrightness = totalBrightness / (pixelBuffer.length / 4);
+
+        // Update the #info element's class based on the average brightness
+        const infoElement = document.getElementById("info");
+        if (averageBrightness > 0.5 && !isLightBackground) {
+          infoElement.classList.add("light");
+          isLightBackground = true;
+        } else if (averageBrightness <= 0.5 && isLightBackground) {
+          infoElement.classList.remove("light");
+          isLightBackground = false;
         }
       }
     </script>
