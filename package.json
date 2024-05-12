@@ -1,0 +1,22 @@
+{
+  "name": "simple",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.19.2",
+    "puppeteer": "^22.8.0",
+    "three": "^0.164.1",
+    "window": "^4.2.7"
+  },
+  "type": "module",
+  "types": "module"
+}
