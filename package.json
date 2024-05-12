@@ -8,14 +8,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "��M\u0000a\u0000n\u0000i\u0000p\u0000u\u0000l\u0000a\u0000t\u0000o\u0000r\u0000-\u0000d\u0000i\u0000s\u0000p\u0000l\u0000a\u0000y\u0000\r\u0000 \u0000",
   "dependencies": {
     "axios": "^1.6.8",
     "cheerio": "^1.0.0-rc.12",
     "express": "^4.19.2",
     "puppeteer": "^22.8.0",
     "three": "^0.164.1",
-    "window": "^4.2.7"
+    "three-gltf-loader": "^1.111.0",
+    "window": "^1.0.0"
   },
   "type": "module",
   "types": "module"
