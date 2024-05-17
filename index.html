@@ -10,8 +10,34 @@
         overflow: hidden;
       }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <div class="loading-screen">
+      <div class="longfazers">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="body">
+        <span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <div class="base">
+          <span></span>
+        </div>
+        <div class="face"></div>
+      </div>
+      <h1>Loading</h1>
+    </div>
     <div
       id="info"
       style="
@@ -50,7 +76,39 @@
         }
       }
     </script>
+
     <script>
+      // Create an object called `model` with properties for joints
+      const model = {
+        joints: {
+          joint1: { value: 0 },
+          joint2: { value: 4 },
+          joint3: { value: 13 },
+          joint4: { value: 0 },
+          joint5: { value: 0 },
+        },
+      };
+      // Create a GUI instance
+      const gui = new dat.GUI();
+
+      // Add sliders for the joints
+      const jointFolder = gui.addFolder("Joint Controls");
+      const joint1Slider = jointFolder
+        .add(model.joints.joint1, "value", -0.8233209848403931, 1.95)
+        .name("Prismatic Joint 1");
+      const joint2Slider = jointFolder
+        .add(model.joints.joint2, "value", 4, 7)
+        .name("Joint 2 (Prismatic)");
+      const joint3Slider = jointFolder
+        .add(model.joints.joint3, "value", 0, 63)
+        .name("Rotation 1");
+      const joint4Slider = jointFolder
+        .add(model.joints.joint4, "value", 0, 10)
+        .name("Rotation 2");
+      const joint5Slider = jointFolder
+        .add(model.joints.joint5, "value", -2, 2)
+        .name("Rotation 3");
+
       let isLightBackground = false;
 
       function animate() {
@@ -100,7 +158,17 @@
       import { OrbitControls } from "three/addons/controls/OrbitControls.js";
       import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-      let camera, scene, renderer, controls, model, rotationInterval;
+      let camera,
+        scene,
+        renderer,
+        controls,
+        model,
+        rotationInterval,
+        mainRotNode,
+        trans_y,
+        rot_1,
+        rot_2,
+        rot_3;
 
       init();
       animate();
@@ -125,6 +193,7 @@
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.background = texture;
             scene.environment = texture;
+            document.querySelector(".loading-screen").style.display = "none";
           });
 
         // Lighting
@@ -138,13 +207,48 @@
         // Model loading
         const loader = new GLTFLoader();
         loader.load(
-          "./models/final_manipulator.gltf",
+          "./models/air_4.gltf",
           function (gltf) {
             model = gltf.scene;
             model.position.y = -0.8;
             model.scale.setScalar(0.4);
             scene.add(model);
+            mainRotNode = gltf.scene.getObjectByName("MainRot-1");
+            trans_y = gltf.scene.getObjectByName("L-1");
+            rot_1 = gltf.scene.getObjectByName("L-1");
+            rot_2 = gltf.scene.getObjectByName("45-1");
+            rot_3 = gltf.scene.getObjectByName("EndEffector-1");
+            // Link the first slider to the mainRotNode's position.x
+            joint1Slider.onChange(function (value) {
+              if (mainRotNode) {
+                mainRotNode.position.x = value;
+              }
+            });
+            joint2Slider.onChange(function (value) {
+              if (trans_y) {
+                trans_y.position.y = -value / 10;
+              }
+            });
 
+            joint3Slider.onChange(function (value) {
+              if (rot_1) {
+                rot_1.rotation.y = value / 10;
+              }
+            });
+            console.log(rot_2);
+            joint4Slider.onChange(function (value) {
+              if (rot_2) {
+                rot_2.rotation.y = value;
+              }
+            });
+            joint5Slider.onChange(function (value) {
+              if (rot_3) {
+                rot_3.rotation.y = value;
+              }
+            });
+            setTimeout(() => {
+              document.getElementById("loading-screen").style.display = "none";
+            }, 10000);
             // Add rotation animation
             rotationInterval = setInterval(() => {
               model.rotation.y += 0.005;
@@ -169,7 +273,7 @@
         controls = new OrbitControls(camera, renderer.domElement);
         controls.minDistance = 2;
         controls.maxDistance = 5;
-        controls.enablePan = false; // Disable panning
+        controls.enablePan = false;
 
         // Event listener for window resize
         window.addEventListener("resize", onWindowResize);
@@ -178,7 +282,6 @@
         const rotationToggle = document.getElementById("rotationToggle");
         rotationToggle.addEventListener("change", toggleRotation);
       }
-
       function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
