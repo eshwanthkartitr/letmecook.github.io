@@ -116,13 +116,12 @@ body {
 
 #info {
   position: absolute;
-  top: 10px;
   left: 50%;
   font-size: 18px;
   text-align: center;
   width: 60%;
   z-index: 1;
-  padding: 10px;
+  padding: 30px;
   color: #fff;
 }
 
@@ -494,4 +493,62 @@ h1 {
     left: -100%; /* Move completely off-screen */
     opacity: 0;
   }
+}
+
+/* Table styles */
+.table-container {
+  position: absolute;
+  display: none;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  margin: 20px auto;
+  width: 40%;
+  color: black;
+  translate: 0px 150px;
+
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.table-container table, .table-container th, .table-container td {
+  border: 1px solid #555;
+}
+
+.table-container th, .table-container td {
+  padding: 10px;
+}
+
+.table-container th {
+  background-color: grey;
+}
+
+/* Button styles */
+.button-container {
+  text-align: center;
+  background-color: transparent;
+  position: absolute;
+  top: 15%;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.button-container button:hover {
+  background-color: #555;
+  color: white;
+}
+
+.button-container button:active {
+  background-color: #666;
 }

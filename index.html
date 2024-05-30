@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="icon" href="https://cdn-icons-png.freepik.com/512/1700/1700950.png" type="image/x-icon">
     <meta charset="UTF-8" />
     <title>Three.js GLTF Loader</title>
     <link rel="stylesheet" href="./main.css" />
@@ -38,6 +39,7 @@
       </div>
       <h1>Loading</h1>
     </div>
+    <div class = "hi">
     <div
       id="info"
       style="
@@ -60,6 +62,96 @@
         </div>
       </div>
     </div>
+
+    <div class="button-container">
+        <button id="show-dh">Show DH Parameters</button>
+        <button id="show-transformation">Show Transformation Table</button>
+        <button id="clear"> Clear</button>
+        <button id="home" ><a href="./help.html">🏠</a></button> 
+    </div>
+
+    <div id="dh-table" class="table-container">
+        <h2>Denavit-Hartenberg Parameters</h2>
+        <table>
+            <tr>
+                <th>Link</th>
+                <th>Joint Type</th>
+                <th>α(alpha)</th>
+                <th>a</th>
+                <th>d</th>
+                <th>θ (theta)</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Prismatic</td>
+              <td>&pi;/2</td>
+              <td>0</td>
+              <td>d1</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Revolute</td>
+              <td>&pi;/2</td>
+              <td>0</td>
+              <td>0</td>
+              <td>&theta;2</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Prismatic</td>
+              <td>0</td>
+              <td>0</td>
+              <td>d3 + L0</td>
+              <td>&pi;/2</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Revolute</td>
+              <td>0</td>
+              <td>L1</td>
+              <td>0</td>
+              <td>&theta;4</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Revolute</td>
+              <td>&pi;/4</td>
+              <td>0</td>
+              <td>0</td>
+              <td>&theta;5</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Fixed</td>
+              <td>-&pi;/4</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <!-- Add more rows as needed -->
+        </table>
+    </div>
+
+    <div id="transformation-table" class="table-container">
+        <h2>Transformation Table</h2>
+        <table>
+            <tr>
+                <th>Link</th>
+                <th>Transformation Matrix</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Matrix1</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Matrix2</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+
 
     <!-- Import maps polyfill -->
     <!-- Remove this when import maps will be widely supported -->
@@ -185,7 +277,8 @@
 
         // Scene setup
         scene = new THREE.Scene();
-
+        document.querySelector(".hi").style.display = "none";
+        document.querySelector(".loading-screen").style.display = "block";
         // Load HDR environment map
         new RGBELoader()
           .setPath("./textures/")
@@ -193,6 +286,7 @@
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.background = texture;
             scene.environment = texture;
+            document.querySelector(".hi").style.display = "block";
             document.querySelector(".loading-screen").style.display = "none";
           });
 
@@ -246,9 +340,6 @@
                 rot_3.rotation.y = value;
               }
             });
-            setTimeout(() => {
-              document.getElementById("loading-screen").style.display = "none";
-            }, 10000);
             // Add rotation animation
             rotationInterval = setInterval(() => {
               model.rotation.y += 0.005;
@@ -292,6 +383,7 @@
         requestAnimationFrame(animate);
         controls.update(); // Update controls
         renderer.render(scene, camera);
+        const canvas = renderer.domElement;
       }
 
       function toggleRotation(event) {
@@ -305,6 +397,22 @@
           }, 20);
         }
       }
+    </script>
+    <script>
+        document.getElementById('show-dh').addEventListener('click', function() {
+            document.getElementById('dh-table').style.display = 'block';
+            document.getElementById('transformation-table').style.display = 'none';
+        });
+
+        document.getElementById('show-transformation').addEventListener('click', function() {
+            document.getElementById('dh-table').style.display = 'none';
+            document.getElementById('transformation-table').style.display = 'block';
+        });
+
+        document.getElementById('clear').addEventListener('click', function() {
+            document.getElementById('dh-table').style.display = 'none';
+            document.getElementById('transformation-table').style.display = 'none';
+        });
     </script>
   </body>
 </html>
