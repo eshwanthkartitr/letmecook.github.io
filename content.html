@@ -9,23 +9,47 @@
 </head>
 <body>
   <header>
-    <h1>Content Page</h1>
-    <button id="theme-toggle">Toggle Dark Mode</button>
+    <h1>Inverse Kinematics of a 5 DOF Robot</h1>
   </header>
   <nav>
     <ul>
-      <li><a href="help.html">Home</a></li>
+      <li><a href="aim.html">Objectives</a></l1>
+      <li><a href="content.html">Home</a></li>
       <li><a href="quiz.html">Quiz</a></li>
-      <li><a href="content.html">Content</a></li>
       <li><a href="credits.html">Credits</a></li>
       <li><a href="index.html">Simulation</a></li>
+      <li><a href="help.html">Contact Us</a></li>
     </ul>
   </nav>
   <main>
     <section>
-      <h2>Interesting Content</h2>
-      <p>Here you can find interesting content and articles.</p>
+      <h2>Introduction</h2>
+      <p>
+        The 5-DOF hybrid manipulator presented in this paper represents a significant advancement in robotic technology by combining the strengths of serial and parallel mechanisms.
+        The theory and ideas for this project was derived from various resources from internet, research papers and books. Modelling of the manipulator was done in Blender and simulated in website using three.js framework which helps in understanding forward kinematics well.
+        Forward Kinematics is acheived using Modified Denavit-Hartenberg Parameters. The neural network model is developed using pyTorch & ONNX and the model is trained using the dataset generated from the forward kinematics simulation. The backend of the webpage is completely based on JavaScript.
+        For codes visit our Git Page(In Contact Us).
+      </p>
+      <figure>
+        <img src="./figs/fig1.png" alt="Robot Arm" class="resized-image">
+        <figcaption>Fig 1: 5 DOF Robot</figcaption>
+      </figure>
     </section>
+        
+    <section>
+      <h2>Theory</h2>
+      <p>
+        A hybrid manipulator combines the advantages of the serial mechanism (with a larger workspace) with those of the parallel mechanism (with a higher stiffness).
+        The first two DOFs are achieved by a parallel mechanism, which provides good performance in terms of structural rigidity, and a simple configuration.
+        The last three DOFs are achieved by a cantilever-like mechanism to satisfy the workspace requirement and the motion control performance. The Schematic for the system is given
+        in Fig 3. The first joint is a turn table system which simulate a translational motion.The next joint is a rotational joint which is orthogonal to the previous translational movement.
+        The next joint is a translation system which has same axes as the previous frame. Then we have rotational frame with same axes but translated apart and finally we have one rotational joint 
+        which is 45 degrees rotated from the previous frame. The final 2 joints is the robot are there to provide more flexiblity in the workspace. The value of end effector is dependent only on the
+        first three joints. Or simply the last three joints can be considered redundant.  
+      </p>
+
+    </section>
+
   </main>
   <footer>
     <p>&copy; 2024 Group 3. All rights reserved.</p>

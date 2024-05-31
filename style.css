@@ -91,7 +91,6 @@ header {
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 0;
   z-index: 1000;
 }
 
@@ -133,7 +132,6 @@ footer {
   color: var(--footer-text-color);
   text-align: center;
   padding: 1rem;
-  position: fixed;
   width: 100%;
   bottom: 0;
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
@@ -175,7 +173,7 @@ button:hover {
   --footer-text-color: #ffffff;
 }
 
-body.dark-mode {
+body {
   --bg-color: #121212;
   --text-color: #ffffff;
   --header-bg-color: #1E1E1E;
@@ -212,21 +210,19 @@ section {
   transition: transform 0.3s;
 }
 
-section:hover {
-  transform: scale(1.05);
-}
 
 h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  z-index: 0;
 }
 
 h2::after {
   content: '';
   position: absolute;
-  width: 100%;
+  width: 0%;
   height: 4px;
   background: #4CAF50;
   left: 0;
@@ -235,7 +231,7 @@ h2::after {
 }
 
 h2:hover::after {
-  width: 0;
+  width: 100%;
 }
 
 ul {
@@ -250,9 +246,28 @@ ul li {
   font-size: 1.2rem;
 }
 
+.obj-list {
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center;    /* Centers the content vertically */
+}
+
+.obj-list ul {
+  list-style-type: none; /* Removes the default bullet points */
+  padding: 0;            /* Removes the default padding */
+  text-align: center;    /* Centers the text */
+}
+
+.obj-list ul li {
+  margin: 10px 0;        /* Adds some space between the list items */
+}
+
+
 p {
   font-size: 1.1rem;
   line-height: 1.6;
+  text-align: justify;
 }
 
 
@@ -277,9 +292,15 @@ header {
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 0;
   z-index: 1000;
   animation: slideInFromTop 1s ease-out;
+}
+
+nav{
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  
 }
 
 nav ul {
@@ -481,4 +502,25 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+.credits-page {
+  padding: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.credits-page h2{
+  padding: 10px;
+  margin: 10px;
+}
+
+.resized-image {
+  width: 30%; /* Adjust the percentage or use specific values like '300px' */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Ensures the image is treated as a block element */
+  margin: 0 auto; /* Centers the image horizontally */
 }
