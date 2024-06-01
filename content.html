@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Content Page</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./style.css">
   <link rel="icon" href="https://cdn-icons-png.freepik.com/512/1700/1700950.png" type="image/x-icon">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -26,19 +26,7 @@
     </ul>
   </nav>
   <main>
-    <section>
-      <h2>Introduction</h2>
-      <p>
-        The 5-DOF hybrid manipulator presented in this paper represents a significant advancement in robotic technology by combining the strengths of serial and parallel mechanisms.
-        The theory and ideas for this project was derived from various resources from internet, research papers and books. Modelling of the manipulator was done in Blender and simulated in website using three.js framework which helps in understanding forward kinematics well.
-        Forward Kinematics is acheived using Modified Denavit-Hartenberg Parameters. The neural network model is developed using pyTorch & ONNX and the model is trained using the dataset generated from the forward kinematics simulation. The backend of the webpage is completely based on JavaScript.
-        For codes visit our Git Page(In Contact Us).
-      </p>
-      <figure>
-        <img src="./figs/fig1.png" alt="Robot Arm" class="resized-image">
-        <figcaption>Fig 1: 5 DOF Robot</figcaption>
-      </figure>
-    </section>
+
       <h2>Introduction</h2>
       <p>
         The 5-DOF hybrid manipulator presented in this paper represents a significant advancement in robotic technology
@@ -409,31 +397,28 @@ P_A = T_6^0 * O
       Then we feed the data into our neural network and train it for 400 epochs. At the end of training we had a mean absolute error of around 1.5. The training was done with multiple no of epochs, layers and 
       even input data type(radians vs degrees). Then the model is saved and now can be accesed in the simulation page.
     </p>
-    <div class="centered-code">
-    <pre>
-    <code >
-      class AIRModel(nn.Module):
-        def __init__(self):
-            super(AIRModel, self).__init__()
-            self.fc1 = nn.Linear(3, 32)
-            self.fc2 = nn.Linear(32, 64)
-            self.fc3 = nn.Linear(64, 128)
-            self.fc4 = nn.Linear(128, 256)
-            self.fc5 = nn.Linear(256, 128)
-            self.fc6 = nn.Linear(128, 32)
-            self.fc7 = nn.Linear(32, 3)
-        
-        def forward(self, x):
-            x = torch.relu(self.fc1(x))
-            x = torch.relu(self.fc2(x))
-            x = torch.relu(self.fc3(x))
-            x = torch.relu(self.fc4(x))
-            x = torch.relu(self.fc5(x))
-            x = torch.relu(self.fc6(x))
-            x = self.fc7(x)  # Linear activation for the output layer
-            return x
-    </code>
-  </pre>
+    <pre id="codeBlock"><button class="copy-button" onclick="copyCode()">Copy Code</button><code>
+class AIRModel(nn.Module):
+    def __init__(self):
+        super(AIRModel, self).__init__()
+        self.fc1 = nn.Linear(3, 32)
+        self.fc2 = nn.Linear(32, 64)
+        self.fc3 = nn.Linear(64, 128)
+        self.fc4 = nn.Linear(128, 256)
+        self.fc5 = nn.Linear(256, 128)
+        self.fc6 = nn.Linear(128, 32)
+        self.fc7 = nn.Linear(32, 3)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = torch.relu(self.fc3(x))
+        x = torch.relu(self.fc4(x))
+        x = torch.relu(self.fc5(x))
+        x = torch.relu(self.fc6(x))
+        x = self.fc7(x)  # Linear activation for the output layer
+        return x
+    </code></pre>
   </div>
 
     <p>
