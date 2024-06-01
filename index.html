@@ -207,7 +207,6 @@
       ];
       const result = await getInverse(inputArray);
       if (result) {
-        result[1] = result[1] * 180 / Math.PI;
         if (result[1] < 0) {
           result[1] = 360 + result[1];
         }
@@ -215,6 +214,16 @@
         model.joints.joint1.value = result[0];
         model.joints.joint2.value = result[2];
         model.joints.joint3.value = result[1];
+
+        const onChangeCallback0 = joint1Slider.__onChange;
+        onChangeCallback0(result[0]);
+
+        const onChangeCallback1 = joint3Slider.__onChange;
+        onChangeCallback1(result[1]);
+
+        const onChangeCallback = joint2Slider.__onChange;
+        onChangeCallback(result[2]);
+
 
 
         // Update the GUI sliders to reflect the new joint values

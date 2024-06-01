@@ -503,8 +503,6 @@ body {
     transform: translateY(0);
   }
 }
-
-
 .credits-page {
   padding: auto;
   display: flex;
@@ -523,4 +521,52 @@ body {
   height: auto; /* Maintains the aspect ratio */
   display: block; /* Ensures the image is treated as a block element */
   margin: 0 auto; /* Centers the image horizontally */
+}
+/*table*/
+
+.table-container {
+  border-radius: 10px;
+  margin:  auto;
+  width: 40%;
+  color:var(--text-color);
+}
+
+.table-container table {
+  width: 100%;
+  text-align: center;
+}
+
+.table-container table, .table-container th, .table-container td {
+  border: 1px solid #555;
+}
+
+.table-container th, .table-container td {
+  padding: 10px;
+}
+
+.table-container th {
+  font-weight: 700;
+}
+/*matrix*/
+
+
+.matrix-container {
+  font-size: 23px;
+  text-align: center;
+  margin: 20px auto;
+}
+.caption {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+.transformation-matrices {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px;
+}
+
+
+.formula{
+  font-size: 23px;
 }
