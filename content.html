@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Content Page</title>
   <link rel="stylesheet" href="style.css">
-   <link rel="icon" href="https://cdn-icons-png.freepik.com/512/1700/1700950.png" type="image/x-icon">
+  <link rel="icon" href="https://cdn-icons-png.freepik.com/512/1700/1700950.png" type="image/x-icon">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
+
 <body>
   <header>
     <h1>Content Page</h1>
@@ -23,13 +27,428 @@
   </nav>
   <main>
     <section>
+<<<<<<< Updated upstream
       <h2>Interesting Content</h2>
       <p>Here you can find interesting content and articles.</p>
     </section>
+=======
+      <h2>Introduction</h2>
+      <p>
+        The 5-DOF hybrid manipulator presented in this paper represents a significant advancement in robotic technology
+        by combining the strengths of serial and parallel mechanisms.
+        The theory and ideas for this project was derived from various resources from internet, research papers and
+        books. Modelling of the manipulator was done in Blender and simulated in website using three.js framework which
+        helps in understanding forward kinematics well.
+        Forward Kinematics is acheived using Modified Denavit-Hartenberg Parameters. The neural network model is
+        developed using pyTorch & ONNX and the model is trained using the dataset generated from the forward kinematics
+        simulation. The backend of the webpage is completely based on JavaScript.
+        For codes visit our Git Page(In Contact Us).
+      </p>
+      <figure>
+        <img src="./figs/fig1.png" alt="Robot Arm" class="resized-image">
+        <figcaption>Fig 1: 5 DOF Robot in Real Life</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Theory</h2>
+      <p>
+        A hybrid manipulator combines the advantages of the serial mechanism (with a larger workspace) with those of the
+        parallel mechanism (with a higher stiffness).
+        The first two DOFs are achieved by a parallel mechanism, which provides good performance in terms of structural
+        rigidity, and a simple configuration.
+        The last three DOFs are achieved by a cantilever-like mechanism to satisfy the workspace requirement and the
+        motion control performance. The Schematic for the system is given
+        in Fig 3. The first joint is a turn table system which simulate a translational motion.The next joint is a
+        rotational joint which is orthogonal to the previous translational movement.
+        The next joint is a translation system which has same axes as the previous frame. Then we have rotational frame
+        with same axes but translated apart and finally we have one rotational joint
+        which is 45 degrees rotated from the previous frame. The final 2 joints is the robot are there to provide more
+        flexiblity in the workspace. The value of end effector is dependent only on the
+        first three joints. Or simply the last three joints can be considered redundant.
+      </p>
+      <figure>
+        <img src="./figs/fig2.png" alt="Robot Arm" class="resized-image">
+        <figcaption>Fig 2: 5 DOF Robot Model</figcaption>
+      </figure>
+
+    </section>
+
+    <section>
+      <h2>Forward Kinematics</h2>
+      <p>
+        Forward kinematics is a fundamental concept in robotics and mechanical systems that deals with determining the
+        position and orientation of a robot's end-effector (such as a robotic arm's hand or tool)
+        based on the given joint parameters. Typically this conversion is done using transformation matrices. This
+        matrix is defined by the kinematic model of the robot. In this project we have used Modified DH
+        parameters for forward kinematics. In MDH Z axis is the axis through which joint movement occurs. The DH
+        convention uses four parameters to describe each joint-link pair in a kinematic chain which are
+        a (Alpha): The link length, which is the distance along the x-axis from the previous joint to the current joint.
+        α (Alpha): The link twist, which is the angle around the x-axis from the previous joint to the current joint.
+        θ (Theta): The joint angle, which is the rotation around the z-axis of the current joint.
+        d (Distance): The link offset, which is the distance along the z-axis from the previous joint to the current
+        joint.
+        This is then converted into transformation matrix by using details of the each joint's MDH parameters.
+      </p>
+      <figure>
+        <img src="./figs/fig3.png" alt="Schematic" class="resized-image">
+        <figcaption>Fig 3: 5 DOF Robot Schematic</figcaption>
+      </figure>
+
+      <h2>MDH Parameters</h2>
+      <div id="dh-table" class="table-container">
+        <table>
+          <tr>
+            <th>Link</th>
+            <th>Joint Type</th>
+            <th>α(alpha)</th>
+            <th>a</th>
+            <th>d</th>
+            <th>θ(theta)</th>
+          </tr>
+          <tr>
+            <td>0-1</td>
+            <td>Prismatic</td>
+            <td>&pi;/2</td>
+            <td>0</td>
+            <td>d1</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>1-2</td>
+            <td>Revolute</td>
+            <td>&pi;/2</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&theta;2</td>
+          </tr>
+          <tr>
+            <td>2-3</td>
+            <td>Prismatic</td>
+            <td>0</td>
+            <td>0</td>
+            <td>d3 + L0</td>
+            <td>&pi;/2</td>
+          </tr>
+          <tr>
+            <td>3-4</td>
+            <td>Revolute</td>
+            <td>0</td>
+            <td>L1</td>
+            <td>0</td>
+            <td>&theta;4</td>
+          </tr>
+          <tr>
+            <td>4-5</td>
+            <td>Revolute</td>
+            <td>&pi;/4</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&theta;5</td>
+          </tr>
+          <tr>
+            <td>5-6</td>
+            <td>Fixed</td>
+            <td>-&pi;/4</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <!-- Add more rows as needed -->
+        </table>
+      </div>
+      <p>
+        With the parameters given we can generate the final transformation matrix which by which we can find our end
+        effector position. The transformation matrix
+        for each joint is found by using the formula 1. The induvidual matrices must be multiplied in a sequential
+        manner to find the final transformation matrix.
+      </p>
+      <div class="formula">
+        \[
+        {}^0T_6 = {}^0T_1 {}^1T_2 {}^2T_3 {}^3T_4 {}^4T_5{}^5T_6
+        \]
+      </div>
+      <div class="caption">Formula 1: Combining multiple DH matrices</div>
+
+      <div class="matrix-container">
+        <div id="matrix">
+          \[
+          {}^{i-1}T_i=
+          \begin{bmatrix}
+          cos(\theta_i) & -sin(\theta_i) & 0 & a_{i-1} \\
+          sin(\theta_i) cos(\alpha_{i-1}) & cos(\theta_i) cos(\alpha_{i-1}) & -sin(\alpha_{i-1}) & -sin(\alpha_{i-1}) d_i \\
+          sin(\theta_i) sin(\alpha_{i-1}) & cos(\theta_i) sin(\alpha_{i-1}) & cos(\alpha_{i-1}) & cos(\alpha_{i-1}) d_i \\
+          0 & 0 & 0 & 1
+          \end{bmatrix}
+          \]
+        </div>
+        <div class="caption">Mat 1: DH to Transformation</div>
+      </div>
+
+      <div class="transformation-matrices">
+        <div class="matrix-container">
+          <div id="matrix">
+            \[
+            {}^{0}T_1=
+            \begin{bmatrix}
+            1 & 0 & 0 & 0 \\
+            0 & 0 & -1 & -d_1 \\
+            0 & 1 & 0 & 0 \\
+            0 & 0 & 0 & 1
+            \end{bmatrix}
+            \]
+          </div>
+          <div class="caption">Mat 1: DH to Transformation</div>
+        </div>
+        <div class="matrix-container">
+          <div id="matrix">
+            \[
+            {}^{1}T_2=
+            \begin{bmatrix}
+            cos(\theta_2) & -sin(\theta_2) & 0 & 0 \\
+            0 & 0 & -1 & 0 \\
+            sin(\theta_2) & cos(\theta_2)  & 0 & 0 \\
+            0 & 0 & 0 & 1
+            \end{bmatrix}
+            \]
+          </div>
+          <div class="caption">Mat 1: DH to Transformation</div>
+        </div>
+        </div>
+
+
+        <div class="transformation-matrices">
+          <div class="matrix-container">
+            <div id="matrix">
+              \[
+              {}^{2}T_3=
+              \begin{bmatrix}
+              0 & -1 & 0 & 0 \\
+              1 & 0 & 0 & 0 \\
+              0 & 0 & 1 & d_3+L_0 \\
+              0 & 0 & 0 & 1
+              \end{bmatrix}
+              \]
+            </div>
+            <div class="caption">Mat 1: DH to Transformation</div>
+          </div>
+          <div class="matrix-container">
+            <div id="matrix">
+              \[
+              {}^{3}T_4=
+              \begin{bmatrix}
+              cos(\theta_4) & -sin(\theta_4) & 0 & L_{1} \\
+              sin(\theta_4)  & cos(\theta_4) & 0 & 0 \\
+              0 & 0 & 1 & 0 \\
+              0 & 0 & 0 & 1
+              \end{bmatrix}
+              \]
+            </div>
+            <div class="caption">Mat 1: DH to Transformation</div>
+          </div>
+          </div>
+
+
+          <div class="transformation-matrices">
+            <div class="matrix-container">
+              <div id="matrix">
+                \[
+                T_4^5 = 
+                \begin{bmatrix}
+                \cos(\theta_5) & -\sin(\theta_5) & 0 & 0 \\
+                \frac{\sqrt{2} \sin(\theta_5)}{2} & \frac{\sqrt{2} \cos(\theta_5)}{2} & -\frac{\sqrt{2}}{2} & 0 \\
+                \frac{\sqrt{2} \sin(\theta_5)}{2} & \frac{\sqrt{2} \cos(\theta_5)}{2} & \frac{\sqrt{2}}{2} & 0 \\
+                0 & 0 & 0 & 1
+                \end{bmatrix}
+                \]
+                  </div>
+              <div class="caption">Mat 1: DH to Transformation</div>
+            </div>
+            <div class="matrix-container">
+              <div id="matrix">
+                \[
+                T_5^6 = 
+                \begin{bmatrix}
+                \ 1 & 0 & 0 & 0 \\
+                \ 0 & \frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} & 0 \\
+                \ 0 & -\frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} & 0 \\
+                0 & 0 & 0 & 1
+                \end{bmatrix}
+                \]
+              </div>
+              <div class="caption">Mat 1: DH to Transformation</div>
+            </div>
+          </div>
+      <p>
+          After finding the transformation matrix for a position with the above given method, the matrix can be multiplied with the initial position which is origin point(the first axis is origin).
+          \[O =
+          \begin{bmatrix}
+          \ 0 & 0 & 0 & 0 \\
+          \end{bmatrix}
+          \]
+\[
+P_A = T_6^0 * O 
+\]
+      </p>
+      <div id="matrix">
+        \[
+        T_6^0 = 
+        \begin{bmatrix}
+        \ R_{11} & R_{12} & R_{13} & P_{x} \\
+        \ R_{21} & R_{22} & R_{23} & P_{y} \\
+        \ R_{31} & R_{32} & R_{33} & P_{z} \\
+        \ 0 & 0 & 0 & 1
+        \end{bmatrix}
+        \]
+          </div>
+    </section>
+    <section>
+      <h2>Inverse Kinematics</h2>
+      <p>
+        Inverse kinematics is the process of determining the joint parameters that achieve a desired position and and orientation of a robots end effector.
+        Unlike forward kinematics, which computes the end-effector's position and orientation from given joint parameters, inverse kinematics works in the opposite direction.
+        But this can be challenging compared to forward kinematics as it involves solving a set of nonlinear equations and here can be multiple sets of joint 
+        parameters that result in the same end-effector pose. Along with this there is also the case where small change in position requiring large difference of 
+        paramters. Inverse kinematics sometimes use transformation matrices to find the paramters too. In this project we have focuesd on solving inverse kinematic 
+        problem by using neural network.
+      </p>
+
+      <h3>Analytical Solution</h3>
+      <p>
+        In this method we will be using the values from our transformation matrix to find the parameters for our system. We are following this as our manipulator follows 
+        pieper criterion.
+      </p>
+      <div class="formula">
+        \[
+        \ P_z = -\ d_3 -\ L_0
+        \]
+      </div>
+
+      <div class="formula">
+        \[
+        \ P_x = -\ L_1 sin(\theta_2)
+        \]
+      </div>
+
+      <div class="formula">
+        \[
+        \ P_y = -\ d_1 - \ L_1 cos(\theta_2)
+        \]
+      </div>
+
+      <div class="formula">
+        \[
+        \ R_{31} = -\frac{\sqrt{2}sin(\theta_5)}{2} 
+        \]
+      </div>
+
+      <div class="formula">
+        \[
+        \ R_{11} = \frac{\sqrt{2} \sin(\theta_2) \sin(\theta_4) \sin(\theta_5)}{2} - \cos(\theta_4) \cos(\theta_5) \sin(\theta_2) - \frac{\sqrt{2} \cos(\theta_2) \cos(\theta_4) \sin(\theta_5)}{2} - \cos(\theta_2) \cos(\theta_5) \sin(\theta_4)
+        \]
+      </div>
+
+      <p>
+        Now using the above equations we can solve for the parameters. This is the analytical solution for the inverse kinematics problem from transformation matrix. This can be tough to solve in many cases.
+      </p>
+
+      <div class="formula">
+        \[
+        \ d_{3} = -\ L_0 - P_z
+        \]
+      </div>
+
+      <div class="formula">
+        \[
+        \theta_{5} = \ arcsin(-\sqrt{2}R_{31})
+        \]
+      </div>
+
+      <div class="formula">
+        \[
+        \theta_{2} = \ arcsin(-\frac{P_x}{L_1})
+        \]
+      </div>
+
+      <div class="formula">
+        \[
+        d_{1} = \ -P_y - L_1cos(\theta_2)
+        \]
+      </div>
+      <p>
+        We couldnt add the solution for θ<sub>5</sub> due to size and computational limitations and further reasons are stated below. 
+      </p>
+
+    <h3>Using Neural Networks</h3>
+    <p>
+      Deep learning is a subset of machine learning and artificial intelligence (AI) that involves neural networks with many layers (hence the term "deep"). 
+      The fundamental building blocks of deep learning are neural networks. A neural network is composed of layers of nodes (neurons). 
+      Each node is a computational unit that processes input and passes the result to the next layer. Each neuron applies an activation function to its input to introduce non-linearity into the network, enabling it to model complex relationships. 
+      Common activation functions include ReLU (Rectified Linear Unit), sigmoid, and tanh. As the network learns, it adjusts the weights and biases of each neuron to minimize the error in its predictions.  
+      Deep learning models, once trained, can perform IK calculations much faster than traditional iterative methods. Deep learning models excel at handling non-linear relationships, which are common in complex robotic systems with multiple degrees of freedom.
+      Deep learning models can learn from data, allowing them to adapt to new and varied kinematic configurations without needing explicit and complex calculations.
+    </p>
+
+    <figure>
+      <img src="./figs/fig4.png" alt="Schematic of NN" class="resized-image">
+      <figcaption>Fig 4: Schematic of a neural network</figcaption>
+    </figure>
+
+    <p>
+      The whole process of inverse kinematics using Deep Learning starts with gathering data. This data will then be used for multiple epochs to train our model.
+      We collect data by using the forward kinematics method defined earlier. We ran nested forloops to generate multiple combinations of parameters, and using that we found end effector posiiton.
+      We only took first three parameters for our NN model, where as there are 5 parameters. This is because by experiment we found out that last two joints were to only produce 
+      flexiblity in arranging the system and it didnt have imapct on the end-effector position. And that is the reason we didnt solve for θ<sub>5</sub> in the previous section.
+      Then we feed the data into our neural network and train it for 400 epochs. At the end of training we had a mean absolute error of around 1.5. The training was done with multiple no of epochs, layers and 
+      even input data type(radians vs degrees). Then the model is saved and now can be accesed in the simulation page.
+    </p>
+    <div class="centered-code">
+    <pre>
+    <code >
+      class AIRModel(nn.Module):
+        def __init__(self):
+            super(AIRModel, self).__init__()
+            self.fc1 = nn.Linear(3, 32)
+            self.fc2 = nn.Linear(32, 64)
+            self.fc3 = nn.Linear(64, 128)
+            self.fc4 = nn.Linear(128, 256)
+            self.fc5 = nn.Linear(256, 128)
+            self.fc6 = nn.Linear(128, 32)
+            self.fc7 = nn.Linear(32, 3)
+        
+        def forward(self, x):
+            x = torch.relu(self.fc1(x))
+            x = torch.relu(self.fc2(x))
+            x = torch.relu(self.fc3(x))
+            x = torch.relu(self.fc4(x))
+            x = torch.relu(self.fc5(x))
+            x = torch.relu(self.fc6(x))
+            x = self.fc7(x)  # Linear activation for the output layer
+            return x
+    </code>
+  </pre>
+  </div>
+
+    <p>
+      ReLU activation function was used to capture the non-linearity in the input data. 6 Layer idea was brought by the idea of 3 values to be found. ADAM optimizer was used for optimization algorithm and the loss function used was Mean Absolute Error.
+      The whole model was trained in our own laptop in GPU and the batch size was set to 32. Our total dataset had around 5 lakh values.For codes you can visit oru Git Page.
+    </p>
+
+    <p>
+      Though there are a lot of positives for a Deep Learning based approach, there are many disadvantages too. The important one being including constraints on the outputs.
+      Other than that there are many other disadvantages too such as requirement of a large dataset, extensive training time and difficulty in building the model architecture, sensitivity to noise and variability in input data
+      and problem of overfitting. Despite these disadvantages, neural networks can still offer significant benefits for IK when properly trained, validated, and integrated into robotic systems.
+      However, it's essential to carefully consider these challenges and potential limitations when deciding whether to use neural networks for IK applications.
+    </p>
+
+    </section>
+
+>>>>>>> Stashed changes
   </main>
   <footer>
     <p>&copy; 2024 Group 3. All rights reserved.</p>
   </footer>
   <script src="script.js"></script>
 </body>
+
 </html>

@@ -18,23 +18,23 @@ body {
 
 /* Folder Styles */
 .dg.main.a {
+  height: 20px;
   font-family: "Roboto", sans-serif;
   color: #ddd;
   text-shadow: none !important;
 }
 
 .dg.main .close-button {
-  background-color: transparent;
-  border: none;
   padding: 0;
   margin: 0;
 }
 
 .close-button {
-  position: relative;
+  display: none;
   top: 175px;
   border-radius: 20px;
 }
+
 
 .c {
   transform: translateX(-10px);

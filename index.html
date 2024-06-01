@@ -170,6 +170,28 @@
     </script>
 
     <script>
+<<<<<<< Updated upstream
+=======
+
+    async function getInverse(inputArray) {
+        const myOnnxSession = new onnx.InferenceSession();
+        // load the ONNX model file
+        await myOnnxSession.loadModel("./onnx_model.onnx");
+
+        // generate model input
+        const inferenceInputs = [
+          new onnx.Tensor(new Float32Array(inputArray), "float32", [1,3]),
+        ];
+
+        // execute the model
+        const output = await myOnnxSession.run(inferenceInputs);
+
+        // consume the output
+        const outputTensor = output.values().next().value;
+        console.log(`model output tensor: ${outputTensor.data}.`);
+        return outputTensor.data;
+  }
+>>>>>>> Stashed changes
       // Create an object called `model` with properties for joints
       const model = {
         joints: {
@@ -179,6 +201,58 @@
           joint4: { value: 0 },
           joint5: { value: 0 },
         },
+<<<<<<< Updated upstream
+=======
+
+        runInference: async function() {
+      const inputArray = [
+        KinematicsModel.values.x.value,
+        KinematicsModel.values.y.value,
+        KinematicsModel.values.z.value,
+      ];
+      const result = await getInverse(inputArray);
+      if (result) {
+
+        if (result[0]<=2000 & result[0]>=0 & result[1]>=-53 & result[1]<=53 & result[2]<=500 & result[2]>=0 ){
+          if (result[1] < 0) {
+          result[1] = 360 + result[1];
+        }
+
+        joint1Slider.value=result[0];
+
+        model.joints.joint1.value = result[0];
+        model.joints.joint2.value = result[2];
+        model.joints.joint3.value = result[1];
+
+        
+
+        const onChangeCallback1 = joint1Slider.__onChange;
+        onChangeCallback1(result[0]);
+
+        const onChangeCallback2 = joint3Slider.__onChange;
+        onChangeCallback2(result[1]);
+
+        const onChangeCallback = joint2Slider.__onChange;
+        onChangeCallback(result[2]);
+
+        // Update the GUI sliders to reflect the new joint values
+        gui.updateDisplay();
+
+        }
+
+
+      }
+    }
+  };
+
+   
+      const KinematicsModel = {
+        values: {
+          x: { value: 0 },
+          y: { value: 0 },
+          z: { value: 0 },
+        },
+>>>>>>> Stashed changes
       };
       // Create a GUI instance
       const gui = new dat.GUI();
@@ -200,6 +274,25 @@
       const joint5Slider = jointFolder
         .add(model.joints.joint5, "value", -2, 2)
         .name("Rotation 3");
+<<<<<<< Updated upstream
+=======
+      
+      const inversekinematicfolder = gui.addFolder("Kinematics");
+      const xvalue = inversekinematicfolder
+                    .add(KinematicsModel.values.x,"value")
+                    .name('X Value');
+
+      const yvalue = inversekinematicfolder
+                    .add(KinematicsModel.values.y,"value")
+                    .name("Y Value");
+
+      const zvalue = inversekinematicfolder
+                      .add(KinematicsModel.values.z,"value")
+                      .name("Y Value");
+      
+      inversekinematicfolder.add(model, 'runInference').name("Run Inverse Kinematics");
+  
+>>>>>>> Stashed changes
 
       let isLightBackground = false;
 

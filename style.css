@@ -482,3 +482,78 @@ body {
     transform: translateY(0);
   }
 }
+<<<<<<< Updated upstream
+=======
+
+
+.credits-page {
+  padding: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.credits-page h2{
+  padding: 10px;
+  margin: 10px;
+}
+
+.resized-image {
+  width: 30%; /* Adjust the percentage or use specific values like '300px' */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Ensures the image is treated as a block element */
+  margin: 0 auto; /* Centers the image horizontally */
+}
+
+
+/*table*/
+
+.table-container {
+  border-radius: 10px;
+  margin:  auto;
+  width: 40%;
+  color:var(--text-color);
+}
+
+.table-container table {
+  width: 100%;
+  text-align: center;
+}
+
+.table-container table, .table-container th, .table-container td {
+  border: 1px solid #555;
+}
+
+.table-container th, .table-container td {
+  padding: 10px;
+}
+
+.table-container th {
+  font-weight: 700;
+}
+/*matrix*/
+
+
+.matrix-container {
+  font-size: 23px;
+  text-align: center;
+  margin: 20px auto;
+}
+.caption {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+.transformation-matrices {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px;
+}
+
+
+.formula{
+  font-size: 23px;
+}
+
+>>>>>>> Stashed changes
