@@ -566,7 +566,34 @@ body {
   margin: 20px;
 }
 
-
 .formula{
   font-size: 23px;
+}
+
+pre {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  padding: 10px;
+  overflow: auto;
+  position: relative;
+  width: 700px;
+  text-align: justify;
+  margin: 0 auto;
+}
+code {
+  font-family: "Courier New", Courier, monospace;
+}
+.copy-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.copy-button:active {
+  background: #45a049;
 }
