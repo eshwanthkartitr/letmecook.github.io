@@ -191,35 +191,34 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
     <script>
-      function dh(alpha,a,d,theta){
-        alpha  = alpha*Math.PI/180;
-        theta = theta*Math.PI/180;
-        return [
-          [Math.cos(theta),-Math.sin(theta),0,a],
-          [Math.sin(theta)*Math.cos(alpha),Math.cos(theta)*Math.cos(alpha),-Math.sin(alpha),-Math.sin(alpha)*d],
-          [Math.sin(theta)*Math.sin(alpha),Math.cos(theta)*Math.sin(alpha),Math.cos(alpha),Math.cos(alpha)*d],
-          [0,0,0,1]
-        ];
-      }
+function dh(alpha, a, d, theta){
+    return [
+        [Math.cos(theta), -Math.sin(theta), 0, a],
+        [Math.sin(theta) * Math.cos(alpha), Math.cos(theta) * Math.cos(alpha), -Math.sin(alpha), -Math.sin(alpha) * d],
+        [Math.sin(theta) * Math.sin(alpha), Math.cos(theta) * Math.sin(alpha), Math.cos(alpha), Math.cos(alpha) * d],
+        [0, 0, 0, 1]
+    ];
+}
 
-    function updatetransform(d1,t2,d3,t4,t5){
-      const L0 = 465+50+2*285; // Example length value for L0
+// Function to update the transformation matrix based on joint values
+function updatetransform(d1, t2, d3, t4, t5){
+    const L0 = 465 + 50 + 2 * 285; // Example length value for L0
     const L1 = 450; // Example length value for L1
 
     // Link 1 parameters
     const T1 = dh(Math.PI / 2, 0, d1, 0);
 
     // Link 2 parameters
-    const T2 = dh(Math.PI / 2, 0, 0, t2);
+    const T2 = dh(Math.PI / 2, 0, 0, t2 * Math.PI / 180);
 
     // Link 3 parameters
     const T3 = dh(0, 0, d3 + L0, Math.PI / 2);
 
     // Link 4 parameters
-    const T4 = dh(0, L1, 0, t4);
+    const T4 = dh(0, L1, 0, t4 * Math.PI / 180);
 
     // Link 5 parameters
-    const T5 = dh(Math.PI / 4, 0, 0, t5);
+    const T5 = dh(Math.PI / 4, 0, 0, t5 * Math.PI / 180);
 
     // Link 6 parameters
     const T6 = dh(-Math.PI / 4, 0, 0, 0);
@@ -232,33 +231,37 @@
     T = math.multiply(T, T6);
 
     return T;
+}
 
-    }
-
-    function updateTable(matrix) {
-          for (let i = 0; i < 4; i++) {
-              for (let j = 0; j < 4; j++) {
-                  document.getElementById(`tf${i + 1}${j + 1}`).innerHTML = parseFloat(matrix[i][j]).toFixed(2);
-              }
-          }
-      }
-
-      function updateinpage() {
-        updateTable(updatetransform(joint1Slider.getValue(), joint2Slider.getValue(), joint3Slider.getValue(), joint4Slider.getValue(), joint5Slider.getValue()));
-        let T = updatetransform(joint1Slider.getValue(), joint2Slider.getValue(), joint3Slider.getValue(), joint4Slider.getValue(), joint5Slider.getValue());
-        let vector = [0, 0, 0, 1];
-
-        // Convert vector to a column vector
-        let columnVector = math.transpose([vector]);
-
-        // Multiply the transformation matrix by the column vector
-        let result = math.multiply(T, columnVector);
-
-        for(let i=1;i<=3;i++){
-          document.getElementById(`end${i}`).innerHTML = parseFloat(result[i-1]).toFixed(2);
+// Function to update the transformation matrix table in HTML
+function updateTable(matrix) {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            document.getElementById(`tf${i + 1}${j + 1}`).innerHTML = parseFloat(matrix[i][j]).toFixed(2);
         }
+    }
+}
 
-      }
+// Function to update the transformation matrix and end-effector position in the page
+function updateinpage() {
+    let d1 = joint1Slider.getValue();
+    let t2 = joint2Slider.getValue();
+    let d3 = joint3Slider.getValue();
+    let t4 = joint4Slider.getValue();
+    let t5 = joint5Slider.getValue();
+
+    let T = updatetransform(d1, t2, d3, t4, t5);
+    updateTable(T);
+
+    // End-effector position calculation
+    let vector = [0, 0, 0, 1];
+    let result = math.multiply(T, vector);
+
+    for(let i = 1; i <= 3; i++){
+        document.getElementById(`end${i}`).innerHTML = parseFloat(result[i - 1]).toFixed(2);
+    }
+}
+
 
 
     async function getInverse(inputArray) {

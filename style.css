@@ -23,7 +23,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* Scrollbar styling for Firefox */
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 8px;
   color: #333 #000;
 }
@@ -73,10 +73,9 @@ body::-webkit-scrollbar-thumb {
   text-align: center;
 }
 
-
 /* Basic Styles */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--bg-color);
@@ -117,7 +116,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  color: #FFD700;
+  color: #ffd700;
   transform: scale(1.1);
 }
 
@@ -138,7 +137,7 @@ footer {
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -165,7 +164,7 @@ button:hover {
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
-  --header-bg-color: #4CAF50;
+  --header-bg-color: #4caf50;
   --header-text-color: #ffffff;
   --nav-bg-color: #333;
   --nav-text-color: #ffffff;
@@ -176,11 +175,11 @@ button:hover {
 body {
   --bg-color: #121212;
   --text-color: #ffffff;
-  --header-bg-color: #1E1E1E;
+  --header-bg-color: #1e1e1e;
   --header-text-color: #ffffff;
-  --nav-bg-color: #2C2C2C;
+  --nav-bg-color: #2c2c2c;
   --nav-text-color: #ffffff;
-  --footer-bg-color: #2C2C2C;
+  --footer-bg-color: #2c2c2c;
   --footer-text-color: #ffffff;
 }
 
@@ -210,7 +209,6 @@ section {
   transition: transform 0.3s;
 }
 
-
 h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -220,11 +218,11 @@ h2 {
 }
 
 h2::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 0%;
   height: 4px;
-  background: #4CAF50;
+  background: #4caf50;
   left: 0;
   bottom: -10px;
   transition: width 0.3s;
@@ -247,22 +245,20 @@ ul li {
 }
 
 .obj-list {
-  color: #FFFFFF;
   display: flex;
   justify-content: center; /* Centers the content horizontally */
-  align-items: center;    /* Centers the content vertically */
+  align-items: center; /* Centers the content vertically */
 }
 
 .obj-list ul {
   list-style-type: none; /* Removes the default bullet points */
-  padding: 0;            /* Removes the default padding */
-  text-align: center;    /* Centers the text */
+  padding: 0; /* Removes the default padding */
+  text-align: center; /* Centers the text */
 }
 
 .obj-list ul li {
-  margin: 10px 0;        /* Adds some space between the list items */
+  margin: 10px 0; /* Adds some space between the list items */
 }
-
 
 p {
   font-size: 1.1rem;
@@ -270,10 +266,9 @@ p {
   text-align: justify;
 }
 
-
 /* Basic Styles */
 body {
-  font-family: 'Mukta', sans-serif;
+  font-family: "Mukta", sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;
@@ -296,11 +291,10 @@ header {
   animation: slideInFromTop 1s ease-out;
 }
 
-nav{
+nav {
   position: sticky;
   top: 0;
   z-index: 9999;
-  
 }
 
 nav ul {
@@ -383,7 +377,7 @@ button.learn-more {
 }
 
 .learn-more .icon.arrow::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -0.25rem;
   right: 0.0625rem;
@@ -511,7 +505,7 @@ body {
   flex-wrap: wrap;
 }
 
-.credits-page h2{
+.credits-page h2 {
   padding: 10px;
   margin: 10px;
 }
@@ -526,9 +520,9 @@ body {
 
 .table-container {
   border-radius: 10px;
-  margin:  auto;
+  margin: auto;
   width: 40%;
-  color:var(--text-color);
+  color: var(--text-color);
 }
 
 .table-container table {
@@ -536,11 +530,14 @@ body {
   text-align: center;
 }
 
-.table-container table, .table-container th, .table-container td {
+.table-container table,
+.table-container th,
+.table-container td {
   border: 1px solid #555;
 }
 
-.table-container th, .table-container td {
+.table-container th,
+.table-container td {
   padding: 10px;
 }
 
@@ -548,7 +545,6 @@ body {
   font-weight: 700;
 }
 /*matrix*/
-
 
 .matrix-container {
   font-size: 23px;
@@ -566,12 +562,16 @@ body {
   margin: 20px;
 }
 
-.formula{
+.formula {
   font-size: 23px;
 }
 
+#pre.dark-mode {
+  background-color: var(--nav-bg-color);
+}
+
 pre {
-  background-color: #f5f5f5;
+  background-color: var(--footer-bg-color);
   border: 1px solid #ccc;
   padding: 10px;
   overflow: auto;
@@ -587,7 +587,7 @@ code {
   position: absolute;
   right: 10px;
   top: 10px;
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -596,4 +596,28 @@ code {
 }
 .copy-button:active {
   background: #45a049;
+}
+
+.team-member {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.team-member img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+}
+
+.team-member h3 {
+  color: var(--text-color);
+  margin: 0 0 5px;
+}
+
+.team-member p {
+  margin: 0;
+  color: #555;
 }

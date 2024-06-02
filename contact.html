@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Team</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+        --b-color: #ccc;
+      --bg-color: #f9f9f9;
+      --text-color: #000;
+      --header-bg-color: #333;
+      --header-text-color: #fff;
+      --nav-bg-color: #444;
+      --nav-text-color: #fff;
+      --footer-bg-color: #333;
+      --footer-text-color: #fff;
+    }
+
+    [data-theme="dark"] {
+        --b-color: #222;
+      --bg-color: #333;
+      --text-color: #fff;
+      --header-bg-color: #555;
+      --header-text-color: #fff;
+      --nav-bg-color: #666;
+      --nav-text-color: #fff;
+      --footer-bg-color: #555;
+      --footer-text-color: #fff;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--b-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--header-bg-color);
+      color: var(--header-text-color);
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: center;
+      background-color: var(--nav-bg-color);
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: var(--nav-text-color);
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: var(--bg-color);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-member {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .team-member img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      margin-right: 20px;
+    }
+
+    .team-member h3 {
+      margin: 0 0 5px;
+    }
+
+    .team-member p {
+      margin: 0;
+      color: var(--text-color);
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: var(--footer-bg-color);
+      color: var(--footer-text-color);
+      position: relative;
+      width: 100%;
+      bottom: 0;
+    }
+
+    .theme-toggle {
+      background-color: var(--header-bg-color);
+      color: var(--header-text-color);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Meet Our Team</h1>
+    <button id="theme-toggle" class="theme-toggle">Toggle Theme</button>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="aim.html">Objectives</a></li>
+      <li><a href="content.html">Home</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="credits.html">Credits</a></li>
+      <li><a href="index.html">Simulation</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </nav>
+  <main>
+    <div class="team-member">
+      <img src="https://via.placeholder.com/100" alt="Abishek">
+      <div>
+        <h3>Abishek</h3>
+        <p>CB.EN.U4AIE22103</p>
+        <p>Abishek is a key team member, contributing his expertise in artificial intelligence and robotics.</p>
+      </div>
+    </div>
+    <div class="team-member">
+      <img src="https://via.placeholder.com/100" alt="Eshwanth Karti T R">
+      <div>
+        <h3>Eshwanth Karti T R</h3>
+        <p>CB.EN.U4AIE22118</p>
+        <p>Eshwanth is an experienced project manager with over 10 years in the field of robotics.</p>
+      </div>
+    </div>
+    <div class="team-member">
+      <img src="https://via.placeholder.com/100" alt="Madhavan Narayanan">
+      <div>
+        <h3>Madhavan Narayanan</h3>
+        <p>CB.EN.U4AIE22135</p>
+        <p>Madhavan excels in neural network models and has been vital in optimizing our algorithms.</p>
+      </div>
+    </div>
+    <div class="team-member">
+      <img src="https://via.placeholder.com/100" alt="Nithish Ariyha K">
+      <div>
+        <h3>Nithish Ariyha K</h3>
+        <p>CB.EN.U4AIE22140</p>
+        <p>Nithish brings extensive experience in data analysis and has contributed significantly to our projects.</p>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2024 Robotics Team. All rights reserved. By Group - 3</p>
+  </footer>
+
+  <script src="./script.js">
+  </script>
+</body>
+
+</html>
