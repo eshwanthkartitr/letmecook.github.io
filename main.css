@@ -506,7 +506,6 @@ h1 {
   width: 40%;
   color: black;
   translate: 0px 150px;
-
 }
 
 .table-container table {
@@ -517,6 +516,10 @@ h1 {
 
 .table-container table, .table-container th, .table-container td {
   border: 1px solid #555;
+}
+
+td{
+  background-color: whitesmoke;
 }
 
 .table-container th, .table-container td {

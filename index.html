@@ -136,18 +136,38 @@
     <div id="transformation-table" class="table-container">
         <h2>Transformation Table</h2>
         <table>
-            <tr>
-                <th>Link</th>
-                <th>Transformation Matrix</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Matrix1</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Matrix2</td>
-            </tr>
+          <tr>
+            <td id="tf11">10</td>
+            <td id="tf12"></td>
+            <td id="tf13"></td>
+            <td id="tf14"></td>
+          </tr>
+          <tr>
+            <td id="tf21"></td>
+            <td id="tf22"></td>
+            <td id="tf23"></td>
+            <td id="tf24"></td>
+          </tr>
+          <tr>
+            <td id="tf31"></td>
+            <td id="tf32"></td>
+            <td id="tf33"></td>
+            <td id="tf34"></td>
+          </tr>
+          <tr>
+            <td id="tf41"></td>
+            <td id="tf42"></td>
+            <td id="tf43"></td>
+            <td id="tf44"></td>
+          </tr>
+        </table>
+        <h2>End-Effector Position</h2>
+        <table>
+          <tr>
+            <td id="end1"></td>
+            <td id="end2"></td>
+            <td id="end3"></td>
+          </tr>
         </table>
     </div>
     <div>
@@ -159,6 +179,7 @@
       async
       src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.0/math.min.js"></script>
 
     <script type="importmap">
       {
@@ -170,6 +191,75 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
     <script>
+      function dh(alpha,a,d,theta){
+        alpha  = alpha*Math.PI/180;
+        theta = theta*Math.PI/180;
+        return [
+          [Math.cos(theta),-Math.sin(theta),0,a],
+          [Math.sin(theta)*Math.cos(alpha),Math.cos(theta)*Math.cos(alpha),-Math.sin(alpha),-Math.sin(alpha)*d],
+          [Math.sin(theta)*Math.sin(alpha),Math.cos(theta)*Math.sin(alpha),Math.cos(alpha),Math.cos(alpha)*d],
+          [0,0,0,1]
+        ];
+      }
+
+    function updatetransform(d1,t2,d3,t4,t5){
+      const L0 = 465+50+2*285; // Example length value for L0
+    const L1 = 450; // Example length value for L1
+
+    // Link 1 parameters
+    const T1 = dh(Math.PI / 2, 0, d1, 0);
+
+    // Link 2 parameters
+    const T2 = dh(Math.PI / 2, 0, 0, t2);
+
+    // Link 3 parameters
+    const T3 = dh(0, 0, d3 + L0, Math.PI / 2);
+
+    // Link 4 parameters
+    const T4 = dh(0, L1, 0, t4);
+
+    // Link 5 parameters
+    const T5 = dh(Math.PI / 4, 0, 0, t5);
+
+    // Link 6 parameters
+    const T6 = dh(-Math.PI / 4, 0, 0, 0);
+
+    // Compute the final transformation matrix by multiplying the matrices
+    let T = math.multiply(T1, T2);
+    T = math.multiply(T, T3);
+    T = math.multiply(T, T4);
+    T = math.multiply(T, T5);
+    T = math.multiply(T, T6);
+
+    return T;
+
+    }
+
+    function updateTable(matrix) {
+          for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 4; j++) {
+                  document.getElementById(`tf${i + 1}${j + 1}`).innerHTML = parseFloat(matrix[i][j]).toFixed(2);
+              }
+          }
+      }
+
+      function updateinpage() {
+        updateTable(updatetransform(joint1Slider.getValue(), joint2Slider.getValue(), joint3Slider.getValue(), joint4Slider.getValue(), joint5Slider.getValue()));
+        let T = updatetransform(joint1Slider.getValue(), joint2Slider.getValue(), joint3Slider.getValue(), joint4Slider.getValue(), joint5Slider.getValue());
+        let vector = [0, 0, 0, 1];
+
+        // Convert vector to a column vector
+        let columnVector = math.transpose([vector]);
+
+        // Multiply the transformation matrix by the column vector
+        let result = math.multiply(T, columnVector);
+
+        for(let i=1;i<=3;i++){
+          document.getElementById(`end${i}`).innerHTML = parseFloat(result[i-1]).toFixed(2);
+        }
+
+      }
+
 
     async function getInverse(inputArray) {
         const myOnnxSession = new onnx.InferenceSession();
@@ -225,7 +315,7 @@
         onChangeCallback(result[2]);
 
 
-
+  
         // Update the GUI sliders to reflect the new joint values
         gui.updateDisplay();
 
@@ -287,7 +377,7 @@
 
   // Add change listeners to call updateJointValues when KinematicsModel changes
 
-      
+      updateinpage();
 
       let isLightBackground = false;
 
@@ -404,28 +494,33 @@
             joint1Slider.onChange(function (value) {
               if (mainRotNode) {
                 mainRotNode.position.x = (value/722.021)-0.82;
+                updateinpage();
               }
             });
             joint2Slider.onChange(function (value) {
               if (trans_y) {
                 trans_y.position.y = -((value/135.135)+3.8) / 10;
+                updateinpage();
               }
             });
 
             joint3Slider.onChange(function (value) {
               if (rot_1) {
                 rot_1.rotation.y = (value+90) / 57.142;  
+                updateinpage();
               }
             });
             console.log(rot_2);
             joint4Slider.onChange(function (value) {
               if (rot_2) {
                 rot_2.rotation.y = value/57.142;
+                updateinpage();
               }
             });
             joint5Slider.onChange(function (value) {
               if (rot_3) {
                 rot_3.rotation.y = (value-5)/57.6923076923;
+                updateinpage();
               }
             });
             // Add rotation animation
