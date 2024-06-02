@@ -67,7 +67,7 @@
         <button id="show-dh">Show DH Parameters</button>
         <button id="show-transformation">Show Transformation Table</button>
         <button id="clear"> Clear</button>
-        <button id="home" ><a href="./help.html">🏠</a></button> 
+        <button id="home" ><a href="./content.html">🏠</a></button> 
     </div>
 
     <div id="dh-table" class="table-container">
@@ -191,47 +191,38 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
     <script>
-function dh(alpha, a, d, theta){
+function degreesToRadians(degrees) {
+    return degrees * (Math.PI / 180);
+}
+
+// DH parameters transformation matrix function
+function dh(alpha, a, d, theta) {
     return [
         [Math.cos(theta), -Math.sin(theta), 0, a],
         [Math.sin(theta) * Math.cos(alpha), Math.cos(theta) * Math.cos(alpha), -Math.sin(alpha), -Math.sin(alpha) * d],
-        [Math.sin(theta) * Math.sin(alpha), Math.cos(theta) * Math.sin(alpha), Math.cos(alpha), Math.cos(alpha) * d],
+        [Math.sin(theta) * Math.sin(alpha), Math.cos(theta) * Math.sin(alpha), Math.cos(alpha), d * Math.cos(alpha)],
         [0, 0, 0, 1]
     ];
 }
 
-// Function to update the transformation matrix based on joint values
-function updatetransform(d1, t2, d3, t4, t5){
-    const L0 = 465 + 50 + 2 * 285; // Example length value for L0
-    const L1 = 450; // Example length value for L1
-
-    // Link 1 parameters
-    const T1 = dh(Math.PI / 2, 0, d1, 0);
-
-    // Link 2 parameters
-    const T2 = dh(Math.PI / 2, 0, 0, t2 * Math.PI / 180);
-
-    // Link 3 parameters
-    const T3 = dh(0, 0, d3 + L0, Math.PI / 2);
-
-    // Link 4 parameters
-    const T4 = dh(0, L1, 0, t4 * Math.PI / 180);
-
-    // Link 5 parameters
-    const T5 = dh(Math.PI / 4, 0, 0, t5 * Math.PI / 180);
-
-    // Link 6 parameters
-    const T6 = dh(-Math.PI / 4, 0, 0, 0);
-
-    // Compute the final transformation matrix by multiplying the matrices
-    let T = math.multiply(T1, T2);
-    T = math.multiply(T, T3);
-    T = math.multiply(T, T4);
-    T = math.multiply(T, T5);
-    T = math.multiply(T, T6);
-
-    return T;
+// Function to compute the overall transformation matrix
+function updatetransform(d1, theta2, d3, theta4, theta5) {
+    let dh1 = dh(Math.PI / 2, 0, d1, 0);
+    let dh2 = dh(Math.PI / 2, 0, 0, degreesToRadians(theta2));
+    let dh3 = dh(0, 0, 465 + 50 + 2 * 285 + d3, Math.PI / 2);
+    let dh4 = dh(0, 450, 0, degreesToRadians(theta4));
+    let dh5 = dh(Math.PI / 4, 0, 0, degreesToRadians(theta5));
+    let dh6 = dh(-Math.PI / 4, 0, 0, 0);
+    
+    let out = math.multiply(dh1, dh2);
+    out = math.multiply(out, dh3);
+    out = math.multiply(out, dh4);
+    out = math.multiply(out, dh5);
+    out = math.multiply(out, dh6);
+    console.log(out);
+    return out;
 }
+
 
 // Function to update the transformation matrix table in HTML
 function updateTable(matrix) {
@@ -245,11 +236,12 @@ function updateTable(matrix) {
 // Function to update the transformation matrix and end-effector position in the page
 function updateinpage() {
     let d1 = joint1Slider.getValue();
-    let t2 = joint2Slider.getValue();
-    let d3 = joint3Slider.getValue();
+    let d3 = joint2Slider.getValue();
+    let t2 = joint3Slider.getValue();
     let t4 = joint4Slider.getValue();
     let t5 = joint5Slider.getValue();
 
+    console.log(d1,t2,d3,t4,t5);
     let T = updatetransform(d1, t2, d3, t4, t5);
     updateTable(T);
 
