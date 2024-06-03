@@ -309,6 +309,36 @@ P_A = T_6^0 * O
         paramters. Inverse kinematics sometimes use transformation matrices to find the paramters too. In this project we have focuesd on solving inverse kinematic 
         problem by using neural network.
       </p>
+      <h3>
+        Types of Inverse Kinematics
+      </h3>
+      <h4>
+        Analytical
+      </h4>
+      <p>
+        Solves kinematic equations algebraically for exact solutions, ideal for simpler robotic configurations.
+      </p>
+
+      <h4>
+        Cyclic Coordinate System
+      </h4>
+      <p>
+        Iteratively adjusts each joint from the end-effector to the base, simple and effective for many practical problems.
+      </p>
+      
+      <h4>
+        Jacobian Based
+      </h4>
+      <p>
+        Utilizes the Jacobian matrix to iteratively solve joint angles, handling redundancy and providing smooth solutions.
+      </p>
+
+      <h4>
+        Neural Networks
+      </h4>
+      <p>
+        Uses machine learning models trained on data to predict joint configurations for desired end-effector positions.
+      </p>
 
       <h3>Analytical Solution</h3>
       <p>
@@ -434,6 +464,27 @@ class AIRModel(nn.Module):
       and problem of overfitting. Despite these disadvantages, neural networks can still offer significant benefits for IK when properly trained, validated, and integrated into robotic systems.
       However, it's essential to carefully consider these challenges and potential limitations when deciding whether to use neural networks for IK applications.
     </p>
+
+    </section>
+
+    <section>
+      <h2>
+        Workspace Simulation
+      </h2>
+
+      <p>
+        A robot's use is defined by its work volume or work space(The volume which the robots end effector can access).
+        As this was done in matlab, we found the forward kinematics of the robot. Then it was plotted on a 3D graph. We also done the 
+        simulation of the manipulator in a basic way using inbuilt systems apart from the main simulation using JS. We have also added a 
+        video of the basic manipulator simulation from matlab.
+      </p>
+
+      <figure>
+        <img src="./figs/fig5.png" alt="Workspace of the Manipulator" class="resized-image">
+        <figcaption>Fig 5: Workspace of the Manipulator</figcaption>
+      </figure>
+  
+      
 
     </section>
 
