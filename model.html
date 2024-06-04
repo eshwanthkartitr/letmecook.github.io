@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" href="https://cdn-icons-png.freepik.com/512/1700/1700950.png" type="image/x-icon">
+    <meta charset="UTF-8" />
+    <title>Three.js GLTF Loader</title>
+    <link rel="stylesheet" href="./main.css" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="loading-screen">
+      <div class="longfazers">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="body">
+        <span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <div class="base">
+          <span></span>
+        </div>
+        <div class="face"></div>
+      </div>
+      <h1>Loading</h1>
+    </div>
+    <div class = "hi">
+    <div
+      id="info"
+      style="
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: white;
+        z-index: 1;
+      "
+    >
+      A simple Three.js GLTF loader example with OrbitControls for ROBOTICS sem
+      - 4
+    </div>
+    <div class="toggle-button-cover">
+      <div class="button-cover">
+        <div class="button r" id="button-3">
+          <input type="checkbox" class="checkbox" id="rotationToggle" />
+          <div class="knobs"></div>
+          <div class="layer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container">
+        <button id="show-dh">Show DH Parameters</button>
+        <button id="show-transformation">Show Transformation Table</button>
+        <button id="clear"> Clear</button>
+        <button id="home" ><a href="./content.html">🏠</a></button> 
+    </div>
+
+    <div id="dh-table" class="table-container">
+        <h2>Denavit-Hartenberg Parameters</h2>
+        <table>
+            <tr>
+                <th>Link</th>
+                <th>Joint Type</th>
+                <th>α(alpha)</th>
+                <th>a</th>
+                <th>d</th>
+                <th>θ (theta)</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Prismatic</td>
+              <td>&pi;/2</td>
+              <td>0</td>
+              <td>d1</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Revolute</td>
+              <td>&pi;/2</td>
+              <td>0</td>
+              <td>0</td>
+              <td>&theta;2</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Prismatic</td>
+              <td>0</td>
+              <td>0</td>
+              <td>d3 + L0</td>
+              <td>&pi;/2</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Revolute</td>
+              <td>0</td>
+              <td>L1</td>
+              <td>0</td>
+              <td>&theta;4</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Revolute</td>
+              <td>&pi;/4</td>
+              <td>0</td>
+              <td>0</td>
+              <td>&theta;5</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Fixed</td>
+              <td>-&pi;/4</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <!-- Add more rows as needed -->
+        </table>
+    </div>
+
+    <div id="transformation-table" class="table-container">
+        <h2>Transformation Table</h2>
+        <table>
+          <tr>
+            <td id="tf11">10</td>
+            <td id="tf12"></td>
+            <td id="tf13"></td>
+            <td id="tf14"></td>
+          </tr>
+          <tr>
+            <td id="tf21"></td>
+            <td id="tf22"></td>
+            <td id="tf23"></td>
+            <td id="tf24"></td>
+          </tr>
+          <tr>
+            <td id="tf31"></td>
+            <td id="tf32"></td>
+            <td id="tf33"></td>
+            <td id="tf34"></td>
+          </tr>
+          <tr>
+            <td id="tf41"></td>
+            <td id="tf42"></td>
+            <td id="tf43"></td>
+            <td id="tf44"></td>
+          </tr>
+        </table>
+        <h2>End-Effector Position</h2>
+        <table>
+          <tr>
+            <td id="end1"></td>
+            <td id="end2"></td>
+            <td id="end3"></td>
+          </tr>
+        </table>
+    </div>
+    <div>
+
+
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script
+      async
+      src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.0/math.min.js"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.155.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.155.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+    <script>
+function degreesToRadians(degrees) {
+    return degrees * (Math.PI / 180);
+}
+
+// DH parameters transformation matrix function
+function dh(alpha, a, d, theta) {
+    return [
+        [Math.cos(theta), -Math.sin(theta), 0, a],
+        [Math.sin(theta) * Math.cos(alpha), Math.cos(theta) * Math.cos(alpha), -Math.sin(alpha), -Math.sin(alpha) * d],
+        [Math.sin(theta) * Math.sin(alpha), Math.cos(theta) * Math.sin(alpha), Math.cos(alpha), d * Math.cos(alpha)],
+        [0, 0, 0, 1]
+    ];
+}
+
+// Function to compute the overall transformation matrix
+function updatetransform(d1, theta2, d3, theta4, theta5) {
+    let dh1 = dh(Math.PI / 2, 0, d1, 0);
+    let dh2 = dh(Math.PI / 2, 0, 0, degreesToRadians(theta2));
+    let dh3 = dh(0, 0, 465 + 50 + 2 * 285 + d3, Math.PI / 2);
+    let dh4 = dh(0, 450, 0, degreesToRadians(theta4));
+    let dh5 = dh(Math.PI / 4, 0, 0, degreesToRadians(theta5));
+    let dh6 = dh(-Math.PI / 4, 0, 0, 0);
+    
+    let out = math.multiply(dh1, dh2);
+    out = math.multiply(out, dh3);
+    out = math.multiply(out, dh4);
+    out = math.multiply(out, dh5);
+    out = math.multiply(out, dh6);
+    console.log(out);
+    return out;
+}
+
+
+// Function to update the transformation matrix table in HTML
+function updateTable(matrix) {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            document.getElementById(`tf${i + 1}${j + 1}`).innerHTML = parseFloat(matrix[i][j]).toFixed(2);
+        }
+    }
+}
+
+// Function to update the transformation matrix and end-effector position in the page
+function updateinpage() {
+    let d1 = joint1Slider.getValue();
+    let d3 = joint2Slider.getValue();
+    let t2 = joint3Slider.getValue();
+    let t4 = joint4Slider.getValue();
+    let t5 = joint5Slider.getValue();
+
+    console.log(d1,t2,d3,t4,t5);
+    let T = updatetransform(d1, t2, d3, t4, t5);
+    updateTable(T);
+
+    // End-effector position calculation
+    let vector = [0, 0, 0, 1];
+    let result = math.multiply(T, vector);
+
+    for(let i = 1; i <= 3; i++){
+        document.getElementById(`end${i}`).innerHTML = parseFloat(result[i - 1]).toFixed(2);
+    }
+}
+
+
+
+    async function getInverse(inputArray) {
+        const myOnnxSession = new onnx.InferenceSession();
+        // load the ONNX model file
+        await myOnnxSession.loadModel("./onnx_model.onnx");
+
+        // generate model input
+        const inferenceInputs = [
+          new onnx.Tensor(new Float32Array(inputArray), "float32", [1, 3]),
+        ];
+
+        // execute the model
+        const output = await myOnnxSession.run(inferenceInputs);
+
+        // consume the output
+        const outputTensor = output.values().next().value;
+        console.log(`model output tensor: ${outputTensor.data}.`);
+        return outputTensor.data;
+  }
+      // Create an object called `model` with properties for joints
+      const model = {
+        joints: {
+          joint1: { value: 0 },
+          joint2: { value: 0 },
+          joint3: { value: 0 },
+          joint4: { value: 0 },
+          joint5: { value: 0 },
+        },
+
+        runInference: async function() {
+      const inputArray = [
+        KinematicsModel.values.x.value,
+        KinematicsModel.values.y.value,
+        KinematicsModel.values.z.value,
+      ];
+      const result = await getInverse(inputArray);
+      if (result) {
+        if (result[1] < 0) {
+          result[1] = 360 + result[1];
+        }
+
+        model.joints.joint1.value = result[0];
+        model.joints.joint2.value = result[2];
+        model.joints.joint3.value = result[1];
+
+        const onChangeCallback0 = joint1Slider.__onChange;
+        onChangeCallback0(result[0]);
+
+        const onChangeCallback1 = joint3Slider.__onChange;
+        onChangeCallback1(result[1]);
+
+        const onChangeCallback = joint2Slider.__onChange;
+        onChangeCallback(result[2]);
+
+
+  
+        // Update the GUI sliders to reflect the new joint values
+        gui.updateDisplay();
+
+      }
+    }
+  };
+
+   
+      const KinematicsModel = {
+        values: {
+          x: { value: 0 },
+          y: { value: 0 },
+          z: { value: 0 },
+        },
+      };
+
+      
+      // Create a GUI instance
+      const gui = new dat.GUI();
+
+      
+
+      // Add sliders for the joints
+      const jointFolder = gui.addFolder("Joint Controls");
+      const joint1Slider = jointFolder
+        .add(model.joints.joint1, "value", 0, 2000)
+        .name("Prismatic Joint 1");
+      const joint2Slider = jointFolder
+        .add(model.joints.joint2, "value", 0, 500)
+        .name("Joint 2 (Prismatic)");
+      const joint3Slider = jointFolder
+        .add(model.joints.joint3, "value", 0, 359)
+        .name("Rotation 1");
+      const joint4Slider = jointFolder
+        .add(model.joints.joint4, "value", 0, 359)
+        .name("Rotation 2");
+      const joint5Slider = jointFolder
+        .add(model.joints.joint5, "value", 0, 359)
+        .name("Rotation 3");
+      
+      const inversekinematicfolder = gui.addFolder("Kinematics");
+      const xvalue = inversekinematicfolder
+                    .add(KinematicsModel.values.x,"value")
+                    .name('X Value');
+
+      const yvalue = inversekinematicfolder
+                    .add(KinematicsModel.values.y,"value")
+                    .name("Y Value");
+
+      const zvalue = inversekinematicfolder
+                      .add(KinematicsModel.values.z,"value")
+                      .name("Y Value");
+      
+      inversekinematicfolder.add(model, 'runInference').name("Run Inverse Kinematics");
+
+
+
+      
+
+  // Add change listeners to call updateJointValues when KinematicsModel changes
+
+      updateinpage();
+
+      let isLightBackground = false;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+
+        // Get the average brightness of the rendered scene
+        const pixelBuffer = new Uint8Array(
+          renderer.getCurrentViewport().width *
+            renderer.getCurrentViewport().height *
+            4
+        );
+        renderer.readRenderTargetPixels(
+          renderer.getRenderTarget(),
+          0,
+          0,
+          renderer.getCurrentViewport().width,
+          renderer.getCurrentViewport().height,
+          pixelBuffer
+        );
+
+        let totalBrightness = 0;
+        for (let i = 0; i < pixelBuffer.length; i += 4) {
+          const brightness =
+            (pixelBuffer[i] + pixelBuffer[i + 1] + pixelBuffer[i + 2]) /
+            (3 * 255);
+          totalBrightness += brightness;
+        }
+        const averageBrightness = totalBrightness / (pixelBuffer.length / 4);
+
+        // Update the #info element's class based on the average brightness
+        const infoElement = document.getElementById("info");
+        if (averageBrightness > 0.5 && !isLightBackground) {
+          infoElement.classList.add("light");
+          isLightBackground = true;
+        } else if (averageBrightness <= 0.5 && isLightBackground) {
+          infoElement.classList.remove("light");
+          isLightBackground = false;
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+
+      let camera,
+        scene,
+        renderer,
+        controls,
+        model,
+        rotationInterval,
+        mainRotNode,
+        trans_y,
+        rot_1,
+        rot_2,
+        rot_3;
+
+      init();
+      animate();
+
+      function init() {
+        // Camera setup
+        camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          20
+        );
+        camera.position.z = 5; // Adjust camera position for a better view
+
+        // Scene setup
+        scene = new THREE.Scene();
+        document.querySelector(".hi").style.display = "none";
+        document.querySelector(".loading-screen").style.display = "block";
+        // Load HDR environment map
+        new RGBELoader()
+          .setPath("./textures/")
+          .load("studio_small_09_8k.hdr", function (texture) {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.background = texture;
+            scene.environment = texture;
+            document.querySelector(".hi").style.display = "block";
+            document.querySelector(".loading-screen").style.display = "none";
+          });
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 200); // Reduced intensity
+        pointLight.position.set(2, 5, 3); // Adjust light position
+        scene.add(pointLight);
+
+        // Model loading
+        const loader = new GLTFLoader();
+        loader.load(
+          "./models/air_4.gltf",
+          function (gltf) {
+            model = gltf.scene;
+            model.position.y = -0.8;
+            model.scale.setScalar(0.4);
+            scene.add(model);
+            mainRotNode = gltf.scene.getObjectByName("MainRot-1");
+            trans_y = gltf.scene.getObjectByName("L-1");
+            rot_1 = gltf.scene.getObjectByName("L-1");
+            rot_2 = gltf.scene.getObjectByName("45-1");
+            rot_3 = gltf.scene.getObjectByName("EndEffector-1");
+            // Link the first slider to the mainRotNode's position.x
+            joint1Slider.onChange(function (value) {
+              if (mainRotNode) {
+                mainRotNode.position.x = (value/722.021)-0.82;
+                updateinpage();
+              }
+            });
+            joint2Slider.onChange(function (value) {
+              if (trans_y) {
+                trans_y.position.y = -((value/135.135)+3.8) / 10;
+                updateinpage();
+              }
+            });
+
+            joint3Slider.onChange(function (value) {
+              if (rot_1) {
+                rot_1.rotation.y = (value+90) / 57.142;  
+                updateinpage();
+              }
+            });
+            console.log(rot_2);
+            joint4Slider.onChange(function (value) {
+              if (rot_2) {
+                rot_2.rotation.y = value/57.142;
+                updateinpage();
+              }
+            });
+            joint5Slider.onChange(function (value) {
+              if (rot_3) {
+                rot_3.rotation.y = (value-5)/57.6923076923;
+                updateinpage();
+              }
+            });
+            // Add rotation animation
+            rotationInterval = setInterval(() => {
+              model.rotation.y += 0.005;
+            }, 20);
+          },
+          undefined,
+          function (error) {
+            console.error(error);
+          }
+        );
+
+        // Renderer setup
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.5; // Reduced exposure
+        document.body.appendChild(renderer.domElement);
+
+        // Controls setup
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.minDistance = 2;
+        controls.maxDistance = 5;
+        controls.enablePan = false;
+
+        // Event listener for window resize
+        window.addEventListener("resize", onWindowResize);
+
+        // Event listener for toggle button
+        const rotationToggle = document.getElementById("rotationToggle");
+        rotationToggle.addEventListener("change", toggleRotation);
+      }
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update(); // Update controls
+        renderer.render(scene, camera);
+        const canvas = renderer.domElement;
+      }
+
+      function toggleRotation(event) {
+        if (event.target.checked) {
+          // Stop rotation
+          clearInterval(rotationInterval);
+        } else {
+          // Start rotation
+          rotationInterval = setInterval(() => {
+            model.rotation.y += 0.005;
+          }, 20);
+        }
+      }
+    </script>
+    <script>
+        document.getElementById('show-dh').addEventListener('click', function() {
+            document.getElementById('dh-table').style.display = 'block';
+            document.getElementById('transformation-table').style.display = 'none';
+        });
+
+        document.getElementById('show-transformation').addEventListener('click', function() {
+            document.getElementById('dh-table').style.display = 'none';
+            document.getElementById('transformation-table').style.display = 'block';
+        });
+
+        document.getElementById('clear').addEventListener('click', function() {
+            document.getElementById('dh-table').style.display = 'none';
+            document.getElementById('transformation-table').style.display = 'none';
+        });
+    </script>
+  </body>
+</html>
