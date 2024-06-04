@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="https://cdn-icons-png.freepik.com/512/1700/1700950.png" type="image/x-icon">
+  <link rel="icon" href="https://cdn-icons-png.freepik.com/512/1700/1700950.png" type="image/x-icon">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Page</title>
@@ -26,17 +26,21 @@
   </nav>
   <main>
     <section>
-      <h2>Take Our Quiz</h2>
-      <form id="quiz-form">
-        <label for="question1">What is the capital of France?</label>
-        <input type="text" id="question1" name="question1">
-        <button type="submit">Submit</button>
-      </form>
+      <h2>Quiz</h2>
+      <div id="terminal">
+        <div id="output"></div>
+        <div id="input-line">
+          <span id="prompt">></span>
+          <input type="text" id="terminal-input" autocomplete="off">
+          <span id="cursor" class="blink">_</span>
+        </div>
+      </div>
     </section>
   </main>
   <footer>
     <p>&copy; 2024 Group 3. All rights reserved.</p>
   </footer>
-  <script src="./script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script src="./postquestion.js"></script>
 </body>
 </html>
