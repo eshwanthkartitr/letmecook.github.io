@@ -10,15 +10,27 @@ document.addEventListener("DOMContentLoaded", function() {
     displayResponse("Available commands: help, clear, start");
   
     const questions = [
-      { question: "What is the workspace of a robot?",options:["a) The physical area where the robot operates","b) The range of motion achievable by the robot's end-effector","c) The control panel where operators input commands "," d) The internal memory storage of the robot's computer"],answer: "b" },
-      { question: "Which of the following is NOT a type of movement achievable with a 5 DOF rigid robot?", options:["a) Translation",
-      "b) Rotation",
-      "c) Expansion",
-      "d) Combination of translation and rotation"],answer: "c" },
-      { question: "What does \"DOF\" stand for in the context of robotics?",options:["a) Direction of Forward motion",
-      "b) Degrees of Freedom",
-      "c) Dimension of Functionality",
-      "d) Dynamic Operation Framework"], answer: "b" }
+      {
+        question: "How many DOF's are redundant in the given manipulator?",
+        options: ["a) 4", "b) 6", "c) 2", "d) 1"],
+        answer: "c",
+      },
+      {
+        question:
+          "What will be initial point of end effector to be multiplied with transformation matrix?",
+        options: ["a) O", "b) [1,2,3]", "c) Any Vector", "d) None of The above"],
+        answer: "a",
+      },
+      {
+        question: "No of hidden layers in the neural network?",
+        options: ["a) 6", "b) 5", "c) 7", "d) 4"],
+        answer: "b",
+      },
+      {
+        question: "No of DH parameter for each joint in MDH system is?",
+        options: ["a) 4", "b) 5", "c) 3", "d) 2"],
+        answer: "a",
+      },
     ];
     let currentQuestionIndex = 0;
     let correctAnswers = 0;
