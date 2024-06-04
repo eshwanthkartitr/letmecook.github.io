@@ -621,3 +621,99 @@ code {
   margin: 0;
   color: #555;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: white;
+  color: black;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #ddd;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+main {
+  padding: 2rem;
+}
+
+.dark-mode {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode header, .dark-mode footer {
+  background-color: #444;
+}
+
+.dark-mode nav ul {
+  background-color: #555;
+}
+
+.dark-mode nav ul li a {
+  color: white;
+}
+
+#terminal {
+  background: black;
+  color: green;
+  font-family: monospace;
+  padding: 10px;
+  border-radius: 10px;
+  height: 300px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+#input-line {
+  display: flex;
+  align-items: center;
+}
+
+#prompt {
+  margin-right: 5px;
+}
+
+#terminal-input {
+  background: black;
+  color: green;
+  border: none;
+  outline: none;
+  flex-grow: 1;
+  font-family: monospace;
+}
+
+#output {
+  margin-bottom: 5px;
+}
+
+#cursor {
+  background: black;
+  color: green;
+  font-weight: bold;
+}
+
+.blink {
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
